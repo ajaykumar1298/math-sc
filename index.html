@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Math Skills Test</title>
+    <style>
+      /* Reset default margin & padding */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Centering content */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* height: 100vh; */
+        /* margin: 5px; */
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        margin: 0;
+      }
+
+      /* White Box Styling */
+      .container {
+        margin: 50px;
+        width: 90%;
+        max-width: 380px;
+        padding: 25px;
+        text-align: center;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      h1 {
+        font-size: 22px;
+        color: #222;
+        margin-bottom: 15px;
+      }
+
+      p {
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 16px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 5px rgba(0, 91, 255, 0.5);
+      }
+
+      button {
+        width: 48%;
+        padding: 12px;
+        margin: 5px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #0056b3;
+        transform: scale(1.05);
+      }
+
+      /* Mobile friendly */
+      @media (max-width: 400px) {
+        .container {
+          width: 95%;
+          padding: 20px;
+        }
+
+        button {
+          width: 100%;
+          margin: 8px 0;
+        }
+      }
+      .resultMsg-hide {
+        display: none;
+      }
+      .danger {
+        color: red;
+      }
+     
+      .wrongAns{
+        color: red;
+        font-weight: 600;
+      }
+      .rightAns{
+        color: green;
+        font-weight: 600;
+      }
+      .msg-result{
+        font-weight: 600;
+      }
+      .msg-hide{
+        display: none;
+      }
+      #inputField,.footer{
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- <h1>Test Your Math Skills</h1>
+        <input id ="inputField" type="number" placeholder="Enter a number" />
+        <p id="msg">Enter a value to get your result</p>
+        <div id="resultMsg" class="resultMsg-hide">
+            <p id="resultMsg">Your Value </p>
+            <h2 id="result"></h2>
+        </div>
+        <button id="sq">Find ^2</button>
+        <button id="qu">Find ^3</button>
+        <button id="reload">Reset Value </button> -->
+      <!-- <h2>tere naal me aaweegi sasural me jaawagi</h2> -->
+     
+    </div>
+
+    <script>
+        let maxNum=0
+        let getRandomNumber=0
+        let container =document.querySelector(".container")
+     
+    //   let input = document.querySelector("#inputField");
+    //   let sqBtn = document.querySelector("#sq");
+    //   let quBtn = document.querySelector("#qu");
+    //   let Defaultmsg = document.querySelector("#msg");
+    //   let Resultmsg = document.querySelector("#resultMsg");
+    //   let FinalValue = document.querySelector("#result");
+
+
+      let init=()=>{
+        let snippet=` <h1>click one button for test your math skills</h1>
+      <div style="display: flex">
+        <button class="playSqBtn">test yout ^2 math skill</button>
+        <button class="playQbBtn">test yout ^3 math skill</button>
+      </div>`
+      container.innerHTML=""
+      container.insertAdjacentHTML("beforeend",snippet)
+      bindEventForPlay()
+    }
+    let createHtml=(isSquareBtnClick)=>{
+             maxNum= Number(prompt("Please enter maxnumber you want to test your ^2 :"))
+        // console.log(maxNum);
+        if(maxNum !==0 && !isNaN(maxNum)){
+            generateHtml(isSquareBtnClick)
+        }else{
+            alert("please Enter valid number ")
+        }
+    }
+    bindEventForPlay=()=>{
+        let playBtnForSq = document.querySelector(".playSqBtn");
+        let playBtnForQb = document.querySelector(".playQbBtn");
+            playBtnForSq.addEventListener("click", () => {
+        // alert("click hua")
+        createHtml(true)
+      });
+      playBtnForQb.addEventListener("click",()=>{
+        createHtml(false)
+      })
+
+      }
+      let generateRandomNum=()=>{
+        return Math.floor(Math.random() * maxNum) + 1;
+      }
+      let generateHtml=(isSquareBtnClick)=>{
+        let label=isSquareBtnClick?"square":"cube"
+          getRandomNumber=generateRandomNum()
+         let snippet=`<div>
+            <h1>Test Your Math Skills</h1>
+            <p>write down ${label} value of this number :</p>
+            <h1 id="randomNum" value=${getRandomNumber}>${getRandomNumber}</h1>
+            <div id="inputField">
+            <input id="InputNum" type="number" placeholder="Enter ${label} of the value"></input>
+            <button id="check">check result</button>
+            </div>
+            <div id="msg">
+                <p class="rightAns msg-hide">your Ans is correct !great job</p>
+                <p class="wrongAns msg-hide">wrong Ans !keep practice </p>
+                <p class="msg-result  msg-hide"></p>
+            </div>
+            <div class="footer">
+            <button id="getNewRandomNumber">get next number</button>
+            <button id="backBtn">back to menu</button>
+            </div>
+            </div>`
+            container.innerHTML=""
+            container.insertAdjacentHTML("beforeend",snippet)
+           
+            bindeHandle(isSquareBtnClick)
+      }
+      let bindeHandle=(isSquareBtnClick)=>{
+        let menuBtn=document.querySelector("#backBtn")
+        let randomBtn=document.querySelector("#getNewRandomNumber")
+        let checkBtn=document.querySelector("#check")
+        let InputNum=document.querySelector("#InputNum")
+        let msgDiv=document.querySelector("#msg")
+        checkBtn.addEventListener("click",()=>{
+            // alert("hey")
+            let inputValue=Number(InputNum.value)
+            let finalResult=isSquareBtnClick?getRandomNumber*getRandomNumber:getRandomNumber*getRandomNumber*getRandomNumber
+            if(!isNaN(inputValue) && inputValue==finalResult){
+                msgDiv.querySelector(".rightAns").classList.remove("msg-hide")
+                msgDiv.querySelector(".wrongAns").classList.add("msg-hide")
+                msgDiv.querySelector(".msg-result").innerHTML=`Ans is ${finalResult}`
+                msgDiv.querySelector(".msg-result").classList.remove("msg-hide")
+            }else{
+                msgDiv.querySelector(".rightAns").classList.add("msg-hide")
+                msgDiv.querySelector(".wrongAns").classList.remove("msg-hide")
+                msgDiv.querySelector(".msg-result").innerHTML=`correct Ans is ${finalResult}`
+                msgDiv.querySelector(".msg-result").classList.remove("msg-hide")
+
+
+            }
+        })
+        randomBtn.addEventListener("click",()=>{
+            // alert("hey")
+            let randomNum=document.querySelector("#randomNum")
+            getRandomNumber=generateRandomNum()
+            randomNum.innerHTML=getRandomNumber
+            InputNum.value=""
+            msgDiv.querySelector(".rightAns").classList.add("msg-hide")
+                msgDiv.querySelector(".wrongAns").classList.add("msg-hide")
+                msgDiv.querySelector(".msg-result").classList.add("msg-hide")
+        })
+        menuBtn.addEventListener("click",()=>{
+            // alert("click hua")
+            container.innerHTML=""
+            init()
+        })
+      }
+
+    //   let generateHtml=()=>{
+    //     this.container
+    //   }
+
+     
+
+  
+      let setValue = function (isSq) {
+        if (input.value == "" || input.value == " ") {
+          Defaultmsg.innerHTML = "Please Enter a valid number";
+          Defaultmsg.classList.add("danger");
+        } else {
+          Resultmsg.classList.remove("resultMsg-hide");
+          msg.classList.add("resultMsg-hide");
+          let value = Number(input.value);
+          FinalValue.innerHTML = isSq ? value * value : value * value * value;
+        }
+      };
+      
+    //   sqBtn.addEventListener("click", () => {
+    //     setValue(true);
+    //   });
+    //   quBtn.addEventListener("click", () => {
+    //     setValue(false);
+    //   });
+
+    //   reload.addEventListener("click", () => {
+    //     // window.location.reload()
+    //     input.value = "";
+    //     Resultmsg.classList.add("resultMsg-hide");
+    //     msg.classList.remove("resultMsg-hide", "danger");
+    //     msg.innerHTML = "Enter a value to get your result";
+    //   });
+    init()
+    </script>
+  </body>
+</html>
